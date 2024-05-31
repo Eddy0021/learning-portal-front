@@ -1,0 +1,64 @@
+.newsletter{
+    display: flex;
+    flex-flow: column;
+    height: 8rem;
+
+    h3{
+        color: var(--prime);
+        font-weight: 700;
+        margin: unset;
+    }
+
+    p{
+        margin-top: unset;
+        margin-bottom: 2rem;
+    }
+
+    &-input{
+        display: flex;
+
+        .input{
+            display: flex;
+            border: 1px solid var(--black);
+            border-right: unset;        
+            background: var(--white);
+            border-radius: 5px 0 0 5px;
+            padding: unset;
+            margin: unset;
+            flex-direction: unset;
+            width: 20rem;
+
+            i{
+                align-content: center;
+                padding: 0.5rem;
+            }
+
+            input{
+                border: unset;      
+                outline: unset;   
+                padding: 10px 10px;    
+                color: var(--black);
+            }
+        }
+
+        button{
+            width: 10rem;
+            border: 1px solid var(--black);
+            border-radius: 0 5px 5px 0;
+            background: var(--prime);
+            color: var(--white);
+
+            &:hover{
+                cursor: pointer;
+                opacity: 0.8;
+            }
+        }
+    }
+}
+
+
+@media screen and (max-width: 600px) {
+    .newsletter{
+        text-align: center;
+    }
+}

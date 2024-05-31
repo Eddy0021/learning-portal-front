@@ -1,0 +1,135 @@
+.container{
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    text-align: center;
+    background: var(--background-white);
+    gap: 2rem;
+ 
+    h1{
+       font-size: 56px;
+       line-height: 78px;
+       font-weight: 700;
+       color: var(--black);
+       padding-top: 2rem;
+    }
+    h3{
+       width: 780px;
+       font-family: var(--popins);
+       font-size: 20px;
+       line-height: 30px;
+       font-weight: 400;
+       color: var(--gray);
+    }
+ 
+    .home-image{
+       width: 100%;
+       height: 100%;
+       background: var(--background-white);
+       border-radius: 0px;
+       padding-bottom: 3rem;
+    }
+ 
+    .home-joinus{
+          width: 85rem;
+          height: 25rem;
+          background: var(--background-grayish);
+          border-radius: 6px;
+          margin: 10rem;
+          overflow: hidden;
+ 
+       &-text{
+          height: 100%;
+          align-content: center;
+          display: flex;
+          flex-flow: column;
+          justify-content: center;
+          width: fit-content;
+          gap: 2rem;
+          
+          h2{
+             width: 510px;
+             font-family: Montserrat;
+             font-size: 48px;
+             line-height: 68px;
+             font-weight: 700;
+             color: var(--prime);
+          }
+ 
+          p{
+             width: 510px;
+             font-family: Poppins;
+             font-size: 18px;
+             line-height: 28px;
+             font-weight: 400;
+             color: var(--black);
+          }
+ 
+          button{
+             width: 7rem;
+             align-self: center;
+          }
+       }
+ 
+       .purple-oval {
+             position: sticky;
+             margin-top: 11rem;
+             float: left;
+             margin-left: -4rem;
+       }
+ 
+       .yellow-oval{
+          position: sticky;
+          float: right;
+          margin-right: -15rem;
+          margin-top: -15rem;
+       }
+ 
+       .purple-dots-top{
+          position: sticky;
+          float: left;
+          margin-top: -10rem;
+       }
+ 
+       .purple-dots-bottom{
+          position: sticky;
+          float: right;
+          margin-top: 19rem;
+          margin-right: -15rem;
+       }
+    }
+ }
+ 
+ @media screen and (max-width: 600px) {
+    .container{
+       h3{
+          width: 100%;
+       }
+ 
+       .home-joinus{
+          width: 100%;
+          height: 10rem;
+ 
+          .purple-oval{
+             margin-top: 5rem;
+             margin-left: -13rem;
+          }
+ 
+          .yellow-oval{
+             margin-right: -20rem;
+             margin-top: -16rem;
+          }
+ 
+          .purple-dots-top{
+             margin-top: -39rem;
+             margin-left: 1rem;
+          }
+ 
+          &-text{
+             h2,p{
+                display: none;
+             }
+          }
+       }
+    }
+ }

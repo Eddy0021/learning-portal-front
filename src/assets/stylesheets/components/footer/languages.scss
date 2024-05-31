@@ -1,0 +1,15 @@
+.languages{
+    select {
+        width: 100%;
+        padding: 0.5rem 1.5rem 0.5rem 0.2rem;
+        background: var(--light-gray);
+        border: 1px solid var(--light-gray);
+        border-radius: 6px;
+        outline: none;
+
+        &:hover{
+            cursor: pointer;
+            opacity: 0.8;
+        }
+    }
+}

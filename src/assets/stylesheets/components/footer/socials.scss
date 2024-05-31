@@ -1,0 +1,15 @@
+.socials{
+    display: flex;
+    width: 10rem;
+    justify-content: space-around;
+
+    a{
+        i{
+            color: var(--prime);
+        }
+
+        &:hover{
+            opacity: 0.7;
+        }
+    }
+}
