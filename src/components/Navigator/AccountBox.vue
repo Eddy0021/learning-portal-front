@@ -6,10 +6,14 @@ import { useUserStore } from '../../stores/userStore';
 
 const useStore = useUserStore();
 const user = computed(() => useStore.getUser);
+
+const isUserNotEmpty = computed(() => {
+   return user.value !== null && Object.keys(user.value).length > 0;
+});
 </script>
 
 <template>
-    <div v-if="!user" class="buttons">
+    <div v-if="!isUserNotEmpty" class="buttons">
         <Button type="prime-text" to="/login">Sign in</Button>
         <Button type="prime" to="/join-us">Join us</Button>
     </div>

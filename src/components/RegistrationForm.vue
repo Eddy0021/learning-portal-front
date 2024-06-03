@@ -6,9 +6,12 @@ import student from '../assets/images/student.png';
 import { useRouter } from 'vue-router';
 import { useSpinnerStore } from '../stores/spinnerStore';
 import { User } from '../interface/Iuser';
+// import { useUserStore } from '../stores/userStore';
+import API_PATHS from "../constants/apiPaths";
 
 const router = useRouter();
 const spinnerStore = useSpinnerStore();
+//const userStore = useUserStore();
 
 const props = defineProps<{
     type: string
@@ -17,18 +20,47 @@ const props = defineProps<{
 const user: User = reactive({
   firstName: '',
   lastName: '',
+  username: '',
   email: '',
+  image: "https://learning-platfrom-data.s3.eu-north-1.amazonaws.com/images/bg.jpg", // default image
   specialization: '', // Only for Trainer
   dateOfBirth: '', // Only for Student
   address: '', // Only for Student
+  status: true,
   type: props.type,
 });
 
-function register(){
+async function register(){
     spinnerStore.setSpinnerStatus(true);
-    /* Api to backend with register data if resolves go to registration/verifiy else throw error */
-    router.push('/registration-verification')
-    console.log('User:', user);
+    
+    let url = API_PATHS.users;
+
+    try {
+        const response = await fetch(url, {
+            method: "POST",
+            body: JSON.stringify(user)
+        });
+
+        if(response.ok){
+            const data = await response.json();
+
+            /*
+                if we want to go my account,
+                after registration we will get authentication error, since we have not token.
+
+                that's why we aren't saving the data.
+                we'll forward the user towards the login page.
+            */
+
+            //user.username = data.username;
+            //localStorage.setItem('uid', data.user_id);
+            //userStore.setUser(user);
+
+            router.push({ name: 'Registration verification', query: { username: data.username, password: data.password } })
+        }
+    } catch (error: any) {
+        console.error(error.message);
+    }
 }
 </script>
 
@@ -40,7 +72,7 @@ function register(){
         
         <form @submit.prevent="register">
             <div class="form-image">
-                <img :src="props.type === 'Trainer' ? trainer : student">
+                <img v-lazyload="props.type === 'Trainer' ? trainer : student">
             </div>
 
             <div class="form-content">

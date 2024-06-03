@@ -17,7 +17,7 @@ import purpleDots from '../../assets/images/purple-dots.png'
          Happy learning!
       </h3>
 
-      <img class="home-image" :src="homeImage" />
+      <img class="home-image" v-lazyload="homeImage" />
 
       <div class="home-joinus">
          <img class="purple-oval" :src="purpleOval" />

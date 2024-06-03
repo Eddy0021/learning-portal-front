@@ -2,6 +2,12 @@
 import Header from '../components/Header.vue';
 import JoinUs from '../components/JoinUs.vue';
 import Footer from '../components/Footer/Footer.vue';
+
+import { onMounted } from "vue";
+
+onMounted(() => {
+  window.scrollTo(0,0)
+})
 </script>
 
 <template>

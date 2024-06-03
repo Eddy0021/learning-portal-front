@@ -18,8 +18,6 @@ import Dialog from 'primevue/dialog';
 import Calendar from 'primevue/calendar';
 import Password from 'primevue/password';
 
-import ToastService from 'primevue/toastservice';
-
 import LazyLoadDirective from './directives/lazyLoadDirective';
 
 const app = createApp(App);
@@ -32,6 +30,5 @@ app.component('Dialog', Dialog);
 app.component('Calendar', Calendar);
 app.component('Password', Password);
 app.component('AgGridVue', AgGridVue);
-app.use(ToastService);
 app.directive('lazyload', LazyLoadDirective);
 app.mount('#app');

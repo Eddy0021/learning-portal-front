@@ -1,21 +1,15 @@
 <script setup lang="ts">
-import Button from '../Button.vue';
 import Box from '../Box.vue';
 import { useUserStore } from '../../stores/userStore';
 import { computed } from "vue";
 
 const userStore = useUserStore();
 const user = computed(() => userStore.getUser);
-
-import homeImage from '../../assets/images/home-image.jpg'
-import purpleOval from '../../assets/images/purple-oval.png'
-import yellowOval from '../../assets/images/yellow-oval.png'
-import purpleDots from '../../assets/images/purple-dots.png'
 </script>
 
 <template>
     <div class="container">
-        <h1>Hi, {{user.firstName}}!</h1>
+        <h1>Hi, {{user?.firstName}}!</h1>
         <h3> 
             Welcome to Learn Platform - 
             where every day is a day to learn.

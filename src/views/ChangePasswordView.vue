@@ -4,8 +4,18 @@ import Footer from '../components/Footer/Footer.vue';
 import Button from '../components/Button.vue';
 import { newPassword } from '../interface/InewPassword';
 import { ref, onMounted } from "vue";
+import { useUserStore } from '../stores/userStore';
+import API_PATHS from '../constants/apiPaths';
+import Swal from 'sweetalert2';
+import axios from 'axios';
 
-const changePassword = ref<newPassword>({});
+const userStore = useUserStore();
+
+const changePassword = ref<newPassword>({
+    oldPassword: "",
+    newPassword: "",
+    confirmNewPassword: ""
+});
 const showSuccess = ref<boolean>(false);
 
 if(localStorage.getItem('token') === null) showSuccess.value = true;
@@ -14,18 +24,63 @@ onMounted(() => {
     const inputElement = document.querySelectorAll('.p-inputtext');
     if (inputElement) {
         inputElement.forEach(element => {
-            element.style.background = '#F3F4F6FF';
-            element.style.border = 'none';
-            element.style.width = '100%';
-            element.autocomplete = "current-password";
-            element.classList.add('font-color');
+            const inputElement = element as HTMLElement;
+            inputElement.style.background = '#F3F4F6FF';
+            inputElement.style.border = 'none';
+            inputElement.style.width = '100%';
+            inputElement.ariaAutoComplete = "current-password";
+            inputElement.classList.add('font-color');
         });
     }
 })
 
-function handleChange(){
-    localStorage.removeItem('token');
-    showSuccess.value = true;
+function swal(message: string){
+    Swal.fire({
+        position: 'top-end',
+        icon: 'warning',
+        title: message,
+        showConfirmButton: false,
+        timer: 1500
+    });
+}
+
+async function handleChange(){
+    let id = localStorage.getItem('uid');
+
+    const body = {
+        user_id: id,
+        currentPassword: changePassword.value.oldPassword,
+        newPassword: changePassword.value.newPassword,
+        confirmNewPassword: changePassword.value.confirmNewPassword
+    };
+    
+    try {
+        var token = localStorage.getItem('token');
+        await axios({
+            method: "PATCH",
+            headers: {
+                'Authorization': `${token}`
+            },
+            url: API_PATHS.users + "/update-password",
+            data: body
+        })
+        .then((response: any) => {
+            if (response.data === "Wrong current password." || response.data === "New password doesn't match.") swal(response.data);
+            else{
+                localStorage.removeItem('token');
+                userStore.setEmptyUser();
+                showSuccess.value = true;
+            }
+        })  
+    } catch (error: any) {
+        Swal.fire({
+            position: 'top-end',
+            icon: 'warning',
+            title: error.message || 'An error occurred', // Display error message or a default message
+            showConfirmButton: false,
+            timer: 1500
+        });
+    }
 }
 </script>
 

@@ -1,8 +1,9 @@
 export interface Training {
-    name: string;
-    startDate: string;
+    studentName: string;
+    trainingName: string;
+    date: string;
     duration: string;
     type: string;
-    description: string;
-    trainer: string;
+    trainerName: string;
+    student_id: string;
 }

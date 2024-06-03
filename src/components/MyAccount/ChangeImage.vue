@@ -11,7 +11,7 @@
       <div class="upload-container">
         <div class="upload-dropzone" @dragover.prevent @drop="handleDrop" @click="triggerFileInput">
             <input type="file" accept="image/png, image/jpeg" @change="handleFileSelect" style="display: none;" ref="fileInput" />
-            <img v-if="previewUrl" :src="previewUrl" alt="Preview" class="preview-image" @click="triggerFileInput" />
+            <img v-if="previewUrl" v-lazyload="previewUrl" alt="Preview" class="preview-image" @click="triggerFileInput" />
             <div v-else class="no-image-selected">
                 <i class="fa-solid fa-cloud-arrow-up"></i>
                 <h2>Drop files here</h2>
@@ -30,9 +30,15 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import Button from '../Button.vue';
 import Dialog from 'primevue/dialog';
+import axios from "axios";
+import { useUserStore } from "../../stores/userStore";
+import API_PATHS from '../../constants/apiPaths';
+
+const userStore = useUserStore();
+const user = computed(() => userStore.getUser);
 
 // State variables
 const showDialog = ref(false);
@@ -68,12 +74,41 @@ const triggerFileInput = () => {
     document.querySelector('input[type="file"]').click();
 };
 
-const uploadFiles = () => {
-    console.log('Files to upload:', selectedFiles.value);
-    //after insertined into bucket
-    selectedFiles.value = [];
-    previewUrl.value = null;
-    showDialog.value = false;
+const uploadFiles = async () => {
+    var token = localStorage.getItem('token');
+    if(selectedFiles.value){
+        let url = API_PATHS.import;
+        const file = selectedFiles.value[0];
+        //console.log("uploadFile to", url);
+
+        // Get the presigned URL
+        const response = await axios({
+            method: "GET",
+            url,
+            headers: {
+                'Authorization': `${token}`
+            },
+            params: {
+            name: encodeURIComponent(file.name),
+            },
+        });
+
+        //console.log("File to upload: ", file.name);
+        //console.log("Uploading to: ", response.data);
+
+        const result = await fetch(response.data, {
+            method: "PUT",
+            body: file,
+        });
+
+        if(result.ok){
+            user.value.image = "https://learning-platfrom-data.s3.eu-north-1.amazonaws.com/images/" + file.name;
+            //after insertined into bucket
+            selectedFiles.value = [];
+            previewUrl.value = null;
+            showDialog.value = false;
+        }
+    }
 };
 </script>
 

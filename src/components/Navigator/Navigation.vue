@@ -13,12 +13,13 @@ const route = useRoute();
 const path = computed(() => route.path );
 
 const isOpen: Ref<boolean> = ref(false);
-const token = ref<string>(localStorage.getItem('token'));
+//const token = ref<string>(localStorage.getItem('token') != null ? localStorage.getItem('token') : '');
 
 const hideButton = ['/join-us', '/registration/Trainer', '/registration/Student', '/registration-verification', '/change-password']
 
 function logout(){
     localStorage.removeItem('token');
+    localStorage.removeItem('uid');
     userStore.setEmptyUser();
 }
 </script>

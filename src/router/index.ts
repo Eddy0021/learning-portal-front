@@ -1,4 +1,5 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router';
+import { useUserStore } from "../stores/userStore";
 
 import HomeView from '../views/HomeView.vue';
 import LoginView from '../views/LoginView.vue';
@@ -77,11 +78,13 @@ const router = createRouter({
       path: '/registration/:type',
       name: 'Registration',
       component: RegistrationView,
+      props: true
     },
     {
       path: '/registration-verification',
       name: 'Registration verification',
       component: RegisterVerificationView,
+      props: true
     },
     {
       path: '/:pathMatch(.*)*', 
@@ -90,19 +93,29 @@ const router = createRouter({
   ]
 })
 
+// Navigation guard
 router.beforeEach((to, from, next) => {
-  // const userStore = useUserStore();
-  // const user = userStore.getUser;
+  const userStore = useUserStore();
+  const token = localStorage.getItem('token');
+  const protectedRoutes = [
+    '/change-password', 
+    '/add-trainer', 
+    '/trainings/add-training', 
+    '/trainings', 
+    '/my-account'
+  ];
 
-  // if (user) { 
-  //   var lastTheme = localStorage.getItem('theme');
-
-  //   if(lastTheme === 'lara-dark-purple') localStorage.setItem('theme', 'lara-light-purple');
-    
-  //   userStore.setToggleTheme( lastTheme === 'lara-dark-purple' ? true : false); 
-  // }
-
-  next(); 
+  if (protectedRoutes.includes(to.path)) {
+    if (token !== null && userStore.getIsUserNotEmpty) {
+      next();
+    } else {
+      next('/');
+    }
+  } else {
+    next();
+  }
+  // Getting error: 'from' is declared but its value is never read.
+  if(false) from
 });
 
 export default router

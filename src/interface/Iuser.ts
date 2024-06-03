@@ -9,4 +9,5 @@ export interface User {
     address?: string; // Optional for Student
     status: boolean;
     type: string;
+    connections?: [];
   }

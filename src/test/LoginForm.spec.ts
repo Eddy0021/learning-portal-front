@@ -7,6 +7,7 @@ import Toast from 'primevue/toast';
 import Password from 'primevue/password';
 import Button from '../components/Button.vue';
 import Spinner from '../components/Spinner.vue';
+import { useUserStore } from '../stores/userStore';
 
 // Mock
 
@@ -27,6 +28,13 @@ vi.mock('../stores/userStore', () => ({
     setUser: vi.fn(),
   }),
 }));
+
+const useStore = useUserStore();
+declare module '@vue/runtime-core' {
+  interface ComponentCustomProperties {
+    $store: typeof useStore;
+  }
+}
 
 describe('LoginForm.vue', () => {
   let localStorageMock;
@@ -75,7 +83,7 @@ describe('LoginForm.vue', () => {
       },
     });
     await wrapper.find('form').trigger('submit.prevent');
-    expect(wrapper.vm.toast.add).toHaveBeenCalledWith({
+    expect(wrapper.vm.$toast.add).toHaveBeenCalledWith({
       severity: 'error',
       summary: 'Recaptcha',
       detail: 'Please mark that you aren`t a robot.',
@@ -90,10 +98,10 @@ describe('LoginForm.vue', () => {
         components: globalComponents,
       },
     });
-    wrapper.vm.tokenkey = 'dummy-token';
+
     await wrapper.find('form').trigger('submit.prevent');
     expect(localStorage.setItem).toHaveBeenCalledWith('token', '123');
-    expect(wrapper.vm.userStore.setUser).toHaveBeenCalled();
-    expect(wrapper.vm.router.push).toHaveBeenCalledWith('/my-account');
+    expect(wrapper.vm.$store.setUser).toHaveBeenCalled();
+    expect(wrapper.vm.$router.push).toHaveBeenCalledWith('/my-account');
   });
 });

@@ -11,7 +11,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useUserStore } from '../../stores/userStore';
 
 const userStore = useUserStore();
@@ -19,7 +19,8 @@ const userStore = useUserStore();
 const themeToggle = ref<boolean>(false);
 
 onMounted(() => {
-  themeToggle.value = userStore.getTheme;
+  const theme = userStore.getTheme
+  if(theme != null) themeToggle.value = theme;
 })
 
 function toggleTheme() {

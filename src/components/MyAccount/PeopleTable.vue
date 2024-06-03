@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed } from "vue";
+import { ref, computed, watch, onMounted } from "vue";
 import { useUserStore } from '../../stores/userStore';
 
 const userStore = useUserStore();
@@ -11,41 +11,47 @@ const secondHeaderWidth = document.documentElement.clientWidth < 600 ? 160 : 200
  // Column Definitions: Defines the columns to be displayed.
  const colDefs = ref([
    { field: "Name", width: firstHeaderWidth},
-   { field: user.value.type === 'Trainer' ? "Status" : "Specialization",
+   { field: user?.value?.type === 'Trainer' ? "Status" : "Specialization",
       cellClassRules: {
         'status-active': (params: any) => params.value === 'Active',
         'status-inactive': (params: any) => params.value === 'Not active'
       }, width: secondHeaderWidth}
  ]);
 
-// fake api for student
-const rowDataStudent = ref([
-   { Name: "Elizabeth Lopez", Specialization: "JavaScript" },
-   { Name: "Matthew Martinez", Specialization: "C#" },
-   { Name: "Maria White", Specialization: "Java" },
- ]);
+const rowDataStudent = ref([]);
+const rowDataTrainer = ref([]);
 
-// fake api
-const rowDataTrainer = ref([
-   { Name: "Marta", Status: 'Active' },
-   { Name: "Gorge", Status: 'Not active' },
-   { Name: "Tom", Status: 'Active' },
-]);
+const updateRowData = () => {
+  if (user.value?.type === 'Student') {
+    rowDataStudent.value = (user.value?.connections || []).map(({ name, specialization }: any) => ({
+      Name: name,
+      Specialization: specialization
+    })) as never[];
+  } else {
+    rowDataTrainer.value = (user.value?.connections || []).map(({ name, status }: any) => ({
+      Name: name,
+      Status: status ? "Active" : "Not active"
+    })) as never[];
+  }
 
-rowDataTrainer.value.sort((a: any, b: any) => {
-    if (a.Status < b.Status) {
-        return -1;
-    }
-    if (a.Status > b.Status) {
-        return 1;
-    }
-    return 0;
-});
+  rowDataTrainer.value.sort((a: any, b: any) => a.Status.localeCompare(b.Status));
+};
+
+onMounted(updateRowData);
+
+// Watch for changes in the connections array
+watch(
+  () => user.value?.connections,
+  () => {
+    updateRowData();
+  },
+  { deep: true }
+);
 </script>
 
 <template>
     <AgGridVue
-    :rowData="user.type === 'Student' ? rowDataStudent : rowDataTrainer"
+    :rowData="user?.type === 'Student' ? rowDataStudent : rowDataTrainer"
     :columnDefs="colDefs"
     :rowHeight="65"
     :style="tableWidth"
