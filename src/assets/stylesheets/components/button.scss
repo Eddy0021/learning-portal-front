@@ -1,0 +1,75 @@
+.button {
+    top: 544px;
+    height: 44px;
+    padding: 0 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--popins), sans-serif;
+    font-size: 16px;
+    line-height: 26px;
+    font-weight: 400;
+    outline: none;
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    opacity: 1;
+    transition: background 0.3s;
+
+    &:hover{
+      cursor: pointer;
+    }
+  }
+  
+  .prime {
+    background: var(--prime);
+    left: 720px;
+    &:hover:not(.button-disabled) {
+      background: var(--prime-hover);
+      opacity: 0.6;
+    }
+    &:active:not(.button-disabled) {
+      background: var(--prime-active);
+    }
+  }
+
+  .prime-text {
+    background: #00000000;
+    color: var(--prime);
+    left: 720px;
+    &:hover:not(.button-disabled) {
+      opacity: 0.6;
+    }
+    &:active:not(.button-disabled) {
+      background: var(--prime-active);
+    }
+  }
+  
+  .secondary {
+    background: var(--secondary);
+    left: 887px;
+    &:hover:not(.button-disabled) {
+      background: var(--secondary-hover);
+      opacity: 0.6;
+    }
+    &:active:not(.button-disabled) {
+      background: var(--secondary-active);
+    }
+  }
+  
+  .important {
+    background: var(--important);
+    left: 1077px;
+    &:hover:not(.button-disabled) {
+      background: var(--important-hover);
+      opacity: 0.6;
+    }
+    &:active:not(.button-disabled) {
+      background: var(--important-active);
+    }
+  }
+  
+  .button-disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }

@@ -1,0 +1,60 @@
+
+h1 {
+    font-size: 48px; 
+    font-weight: 700; 
+    line-height: 68px;
+    margin: 0;
+    color: #171A1FFF;
+}
+
+h5 {
+    font-family: var(--popins);
+    color: #9095A0FF;
+    font-size: 18px; 
+    font-weight: 400; 
+    line-height: 28px;
+}
+
+form {
+    margin-top: 30px;
+    height: 625px;
+    display: flex;
+    align-items: stretch;
+    justify-content: space-between;
+
+    .form-image {
+        width: 451px;
+        
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 12px;
+        }
+
+    }
+
+    .form-content {
+        width: 50%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+}
+
+
+@media screen and (max-width: 600px) {
+    form{
+        flex-flow: column;
+
+        .form-content,
+        .form-image{
+            width: unset;
+        }
+
+        button{
+            margin-top: 2rem;
+        }
+    }
+}

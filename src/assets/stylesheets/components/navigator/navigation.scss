@@ -1,0 +1,131 @@
+.nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    height: 4rem;
+
+    &-buttons {    
+        &-links{
+            display: flex;
+            align-items: center;
+            font-family: var(--popins);
+            gap: 1rem;
+            
+            a  {
+                text-decoration: none;
+                color: var(--black);
+                font-size: 14px; 
+                line-height: 22px; 
+                font-weight: 400;
+                transition: color 0.3s ease;
+    
+                &:hover {
+                    color: var(--prime);
+                }
+            }
+        }
+    }
+}
+
+.mobile-button {
+    display: none;  
+}
+
+.burger-button {
+    display: none;
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+.mobile-menu-close{
+    display: none;
+}
+
+@media screen and (max-width: 600px) {
+    .mobile-menu-close{
+        display: block;
+        position: absolute;
+        right: 2rem;
+        display: flex;
+        justify-content: end;
+        top: 1rem;
+    }
+
+    .burger-button {
+        display: block;
+        position: absolute;
+        left: 1rem;
+        top: 1rem;
+    }
+
+    .nav {
+        position: fixed;
+        width: 70%;
+        height: 100%;
+        top: 0;
+        left: -100%;
+        flex-direction: column-reverse;
+        justify-content: flex-end;
+        align-items: flex-start;  
+        transition: all 0.3s ease;
+        background-color: white;
+        z-index: 2;
+
+        &-buttons {
+            display: flex;
+            flex-flow: column;
+            align-items: start;
+            height: -webkit-fill-available;
+            justify-content: space-between;;
+            margin: unset;
+
+            &-links{
+                display: flex;
+                flex-direction: column;
+                align-items: start;
+                font-family: var(--popins);
+
+                a, button {
+                    padding: 16px 0px;
+                    padding-left: 10px;
+                    text-decoration: none;
+                    color: #565E6CFF;
+                    font-size: 14px; 
+                    line-height: 22px; 
+                    font-weight: 400;
+                    transition: color 0.3s ease;
+                    border-left: 3px solid white;
+    
+                    &:hover {
+                        color: var(--prime);
+                    }
+    
+                    &.active {
+                        border-left: 3px solid var(--prime);
+                        color: var(--prime);
+                        font-weight: 700;
+                    }
+                }
+            }
+
+            button{
+                color: #565E6CFF;
+                font-size: 14px; 
+                font-weight: 300;
+            }
+        }
+
+        &.active {
+            left: 0;
+        }
+
+        .mobile-button {
+            display: block;
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+    }
+}

@@ -1,0 +1,44 @@
+{
+  "name": "learning-portal",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc && vite build",
+    "preview": "vite preview",
+    "test": "vitest",
+    "client:deploy": "sls client deploy --no-config-change --no-policy-change --no-cors-change",
+    "client:deploy:nc": "npm run client:deploy -- --no-confirm",
+    "cloudfront:setup": "sls deploy",
+    "serverless:remove": "sls remove"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "^6.5.2",
+    "ag-grid-vue3": "^31.3.2",
+    "axios": "^1.7.2",
+    "i": "^0.3.7",
+    "npm": "^10.8.0",
+    "pinia": "^2.1.7",
+    "primevue": "^3.52.0",
+    "sweetalert2": "^11.11.0",
+    "vue": "^3.3.11",
+    "vue-recaptcha": "^3.0.0-alpha.6",
+    "vue-router": "^4.3.2"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^4.5.2",
+    "@vue/test-utils": "^2.4.6",
+    "eslint": "^9.3.0",
+    "eslint-plugin-vue": "^9.26.0",
+    "jsdom": "^24.1.0",
+    "sass": "^1.77.2",
+    "serverless-finch": "^4.0.4",
+    "serverless-s3-cleaner": "^2.0.2",
+    "serverless-single-page-app-plugin": "^1.0.4",
+    "typescript": "^5.2.2",
+    "vite": "^5.0.8",
+    "vitest": "^1.6.0",
+    "vue-tsc": "^1.8.25"
+  }
+}

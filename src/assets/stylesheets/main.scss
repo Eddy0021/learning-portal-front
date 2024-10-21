@@ -1,0 +1,217 @@
+:root {
+  /* colors */
+  --prime: #6355D8FF;
+  --prime-hover: #4d3ed3;
+  --prime-active: #3d2dc7;
+
+  --secondary: #60cfa5;
+  --secondary-hover: #36b584;
+  --secondary-active: #2f9c72;
+
+  --important: #ed5d56;
+  --important-hover: #d54845;
+  --important-active: #b53a3a;
+
+  --green: #36B584FF;
+  --red: #ED5D56FF;
+  --black: #171A1FFF;
+  --gray: #9095A0FF; 
+  --white: white;
+  --hr-gray: #d3d3d35e;
+  --light-gray: #EAECEFFF;
+  --background-white: white;
+  --background-grayish: #fafafb;
+  --gray-white: #4d5158;
+  --table-header: #FAFAFBFF;
+
+  /* fonts */
+  --popins: 'Poppins';
+  --montserrat: 'Montserrat';
+}
+
+:root.lara-dark-purple {
+  /* colors */
+  --prime: #6355D8FF;
+  --prime-hover: #4d3ed3;
+  --prime-active: #3d2dc7;
+
+  --secondary: #60cfa5;
+  --secondary-hover: #36b584;
+  --secondary-active: #2f9c72;
+
+  --important: #ed5d56;
+  --important-hover: #d54845;
+  --important-active: #b53a3a;
+
+  --green: #36B584FF;
+  --red: #ED5D56FF;
+  --black: white;
+  --gray: white; 
+  --hr-gray: #d3d3d35e;
+  --light-gray: rgb(66, 74, 85);
+  --table-header: #272b32;
+  --background-white: #272b32;
+  --background-grayish: #171A1FFF;
+  --gray-white: white;
+  
+  .p-dialog-title{
+      color: var(--black);
+  }
+  
+  #app{
+    background: var(--background-white);
+  }
+
+  h1,h2,h3,h4,h5,h6,p,label,input,select,a,ul,li,span{
+    color: white;
+  }
+
+  /* fonts */
+  --popins: 'Poppins';
+  --montserrat: 'Montserrat';
+}
+
+.ag-theme-quartz{
+  .ag-cell-value{
+    align-content: center;
+  }
+
+  .ag-root-wrapper {
+    border: 1px solid rgba(0, 0, 0, 0.055); 
+  }
+
+  .ag-header-viewport {
+      background: var(--table-header);
+  }
+
+  .ag-header-cell-label {
+      font-weight: bold;
+      text-transform: uppercase;
+  }
+
+  .ag-cell[col-id="TrainingName"] {
+      font-weight: bold;
+  }
+
+  .ag-cell[col-id="type"]::before {
+      content: "";
+      position: absolute;
+      top: 13px;
+      left: 0;
+      width: 6rem;
+      height: 60%;
+      background-color: #f3f2fc;
+      border-radius: 50px;
+      z-index: -1;
+  }
+
+  .ag-cell[col-id="type"] {
+      color: var(--prime);         
+  } 
+
+  .ag-row {
+      border-bottom: 1px solid rgb(24 29 31 / 5%);
+  }
+
+  .ag-wrapper,
+  .ag-paging-panel{
+    background: var(--background-white);
+    color: var(--black);
+  }
+  
+  .ag-popup div{
+    background: var(--background-white);
+    color: var(--black);
+    :hover{
+      background: var(--black);
+      color: var(--background-white) !important;
+    }
+  }
+}
+
+
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.container{
+  margin-inline: auto;
+  width: 70%;
+  text-align: left;
+}
+
+.input {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  border-radius: 6px;
+  margin-bottom: 20px;
+  padding: 10px 12px;
+
+  &.focused{
+    border: 1px solid var(--prime);
+    background-color: white;
+    outline: none;
+  }
+
+  label {
+      color: #565E6CFF;
+      font-size: 14px; 
+      font-weight: 700; 
+      line-height: 22px;
+      margin-bottom: 3px;
+  }
+
+  input, select {
+    font-family: Poppins;
+      padding: 10px 20px;
+      font-size: 12px; 
+      font-weight: 600; 
+      line-height: 22px; 
+      background: #FFFFFFFF;
+      border-radius: 6px;
+      border: 1px solid #F8F9FAFF;
+      border-color: #9095A0FF;
+      outline: none; 
+      color: black !important;
+
+      &::placeholder {
+        font-family: 'Poppins';
+        font-size: 12px;
+        font-weight: 600;
+        color: #C9C9C9;
+        opacity: 1;
+      }
+      
+      &:focus {
+          border: 1px solid var(--prime);
+          background-color: white;
+      }
+
+      &.valid {
+          border: 1px solid var(--secondary);
+      }
+
+      &.invalid {
+          border: 1px solid var(--important);
+      }
+  }
+}
+
+.cancel{
+  color: var(--gray) !important;
+}
+
+.title-h2{
+  width: 100%;
+  text-align: center;
+  font-size: 56px;
+  line-height: 78px;
+  font-weight: 700;
+  color: #171A1FFF;
+  margin: 2rem 0px;
+}

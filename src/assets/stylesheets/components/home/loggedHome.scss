@@ -1,0 +1,53 @@
+.container{
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    text-align: center;
+    gap: 2rem;
+ 
+    h1{
+       font-size: 56px;
+       line-height: 78px;
+       font-weight: 700;
+       padding-top: 2rem;
+    }
+    h3{
+       width: 780px;
+       font-family: var(--popins);
+       font-size: 20px;
+       line-height: 30px;
+       font-weight: 400;
+       color: var(--gray);
+    }
+
+    .news{
+        margin-top: 5rem;
+        display: flex;
+        flex-flow: column;
+        align-items: center;
+
+        h3{
+            width: 550px;
+        }
+
+        .articles{
+            display: flex;
+            gap: 5rem;
+            margin: 5rem;
+            text-align: left;
+        }
+    }
+ }
+ 
+ @media screen and (max-width: 600px) {
+    .container{
+      h3{
+        width: 20rem !important;
+      }
+
+      .articles{
+        flex-flow: column;
+        margin: unset !important;
+      }
+    }
+ }

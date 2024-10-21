@@ -1,0 +1,25 @@
+.footer-links{
+    display: flex;
+    gap: 5rem;
+
+    div{
+        display: flex;
+        flex-flow: column;
+        padding: 1rem;
+
+        h3{
+            font-weight: 700;
+        }
+
+        a{
+            text-decoration: none;
+            padding-top: 1rem;
+            color: var(--black);
+            cursor: pointer;
+            
+            &:hover{
+                color: var(--prime);
+            }
+        }
+    }
+}

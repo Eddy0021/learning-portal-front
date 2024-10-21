@@ -1,0 +1,134 @@
+.info-box{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+
+    &-text{
+        width: 70%;
+
+        p{
+            width: 36%;
+        }
+    }
+}
+
+.p-calendar {
+    :deep(.p-inputtext){
+        color: black;
+    }    
+}
+
+.container{
+    padding-top: 2rem;
+    margin-bottom: 10rem;  
+
+    h2{
+        width: unset;
+        font-size: 32px;
+        line-height: 48px;
+        font-weight: 700;
+        color: var(--black);
+        text-align: start !important;
+    }
+
+    &-items{
+        display: flex;
+        justify-content: space-between;
+
+        &-left{
+            .inputs{
+                display: flex;
+                gap: 2rem;
+
+               
+
+                .input{
+                    padding: 10px 0px;
+
+                    input{
+                        background: #F3F4F6FF;
+                        color: black;
+                        border: unset;
+                        width: 15rem;
+                    }
+
+                    .width-20{
+                        width: 20rem;
+                    }
+                }        
+            }
+        }
+
+        &-right{
+            display: flex;
+            gap: 2rem;
+
+            .inputs{
+                padding: unset !important;
+            }
+
+            &-item{
+                display: flex;
+                flex-flow: column;     
+                padding: unset !important;   
+
+                .p-calendar {
+                    :deep(.p-input-icon) {
+                        margin-top: -0.5rem !important;
+                    }
+                }
+            }
+            
+        }
+    }
+
+    &-table{
+        .ag-theme-quartz {
+        --ag-header-column-resize-handle-display: none;
+        --ag-header-foreground-color: var(--black);
+        --ag-header-background-color: var(--table-header:); 
+        --ag-header-label-textTransform: 'uppercase';
+    }
+    }
+}
+
+
+@media screen and (max-width: 600px) {
+    .container{
+        margin-bottom: 5rem;
+        width: 100%;
+        display: flex;
+        flex-flow: column;
+        align-items: center;
+
+        .container-items{
+            flex-flow: column;
+    
+            &-left{
+                display: flex;
+                align-items: center;
+                flex-flow: column;
+                gap: 0;
+                order: 2;
+    
+                .inputs{
+                    flex-flow: column;
+                    gap: 0;
+                    width: 100%;
+    
+                    .input{
+                        input{
+                            width: 100%;
+                        }
+                    }
+                }
+            }
+    
+            &-right{
+                flex-flow: column;
+                gap: 0;
+                order: 1;
+            }
+        }
+    }
+}

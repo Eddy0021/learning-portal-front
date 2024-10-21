@@ -1,0 +1,113 @@
+.mobile-menu-close{
+    display: none;
+}
+
+.name {
+    font-family: var(--popins);
+    font-size: 14px; 
+    line-height: 22px; 
+    font-weight: 700;
+    color: var(--balck);
+}
+
+.email {
+    font-family: var(--popins); 
+    margin-top: 5px;
+    font-size: 12px; 
+    line-height: 20px; 
+    font-weight: 400;
+    color: #9095A0FF;
+}
+
+img {
+    width: 51px; 
+    height: 51px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+hr{
+    width: 256px;
+    height: 0px;
+    border-width: 1px;
+    border-color: var(--hr-gray);
+    border-style: solid;
+    transform: rotate(0.22deg);
+}
+
+.sidebar-menu-closed{
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    width: 12rem;
+    cursor: pointer;
+    background: none;
+    border: none;
+}
+
+.sidebar-menu-open{
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 256px;
+    background: var(--background-white);
+    border: 1px solid #DEE1E6FF;
+    border-radius: 6px;
+    box-shadow: rgba(156, 156, 156, 0.24) 0px 3px 8px;
+
+    .sidebar-menu-header {
+        display: flex;
+        align-items: center;
+        padding: 5px 0;
+        margin: 10px;
+    }
+
+    .sidebar-menu-items {
+        height: 250px;   
+    }
+
+    .sidebar-menu-link {
+        padding: 15px 20px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        text-decoration: none;
+        font-family: var(--popins);
+        font-size: 14px; 
+        line-height: 22px; 
+        font-weight: 400;
+        transition: all 0.3s ease;
+        color: var(--black);
+
+        &:hover {
+            background-color: #FAFAFBFF;
+            color: var(--prime);
+        }
+
+        & img {
+            width: 24px; 
+            height: 24px;
+        }
+    }
+
+    .night-mode{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 15px 20px;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .sidebar-menu-items,
+    .sidebar-menu-sign-out,
+    hr{
+        display: none;
+    }
+
+    .sidebar-menu-open{
+        position: unset;
+        border: unset;
+        box-shadow: unset;
+    }
+}

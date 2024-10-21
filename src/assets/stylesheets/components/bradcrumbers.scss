@@ -1,0 +1,40 @@
+.bradcrumbers{
+    display: flex;
+    padding: 1rem;
+
+    &-item{
+        display: flex;
+        padding-right: 1rem;
+        gap: 1rem;
+
+        i{
+            color: var(--black);
+        }
+
+        &-link{
+            color: rgb(126, 118, 199) !important;
+            font-family: var(--montserrat);
+
+            &:hover{
+                cursor: pointer;
+                opacity: 0.7;
+            }
+        }
+
+        .linked{
+            color: var(--black) !important;
+
+            &:hover{
+                cursor: default;
+                opacity: 1;
+            }
+        }
+    }  
+}
+
+
+@media screen and (max-width: 600px) {
+    .bradcrumbers{
+        font-size: small;
+    }
+}
