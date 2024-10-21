@@ -93,7 +93,7 @@
       font-weight: bold;
   }
 
-  .ag-cell[col-id="Type"]::before {
+  .ag-cell[col-id="type"]::before {
       content: "";
       position: absolute;
       top: 13px;
@@ -105,7 +105,7 @@
       z-index: -1;
   }
 
-  .ag-cell[col-id="Type"] {
+  .ag-cell[col-id="type"] {
       color: var(--prime);         
   } 
 

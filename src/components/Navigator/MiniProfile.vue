@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { ref, type Ref, watchEffect, watch, onMounted, onUnmounted, computed } from "vue";
-import { usePrimeVue } from 'primevue/config';
+import { ref, type Ref, watchEffect, onMounted, onUnmounted, computed } from "vue";
 import { useUserStore } from '../../stores/userStore';
 
 import ToggleTheme from './toggleTheme.vue';
@@ -30,13 +29,14 @@ onUnmounted(() => {
 });
 
 function handleClickOutside(event: MouseEvent) {
-  if (window.innerWidth > 600 && sidebarMenuContainer.value && !sidebarMenuContainer.value.contains(event.target)) {
+  if (window.innerWidth > 600 && sidebarMenuContainer.value && !sidebarMenuContainer.value.contains(event.target as Node)) {
     toggledProfile.value = false;
   }
 }
 
 function logout(){
     localStorage.removeItem('token');
+    localStorage.removeItem('uid');
     userStore.setEmptyUser();
 }
 </script>
@@ -45,16 +45,16 @@ function logout(){
     <div class="sidebar-menu-container" ref="sidebarMenuContainer">
 
         <button v-if="!toggledProfile" @click="toggledProfile = !toggledProfile" class="sidebar-menu-closed">
-            <p class="username">{{ user.username }}</p>
-            <img :src="user.image">
+            <p class="username">{{ user?.username }}</p>
+            <img v-lazyload="user?.image">
         </button>
 
         <div v-else class="sidebar-menu-open">
             <div class="sidebar-menu-header">
-                <img :src="user.image" alt="Marta_st">
+                <img v-lazyload="user?.image">
                 <div class="sidebar-menu-info">
-                    <p class="name">{{ user.username }}</p>
-                    <p class="email">{{ user.email }}</p>
+                    <p class="name">{{ user?.username }}</p>
+                    <p class="email">{{ user?.email }}</p>
                 </div>             
             </div>
 

@@ -3,16 +3,25 @@ import Header from '../components/Header.vue';
 import Footer from '../components/Footer/Footer.vue';
 import Button from '../components/Button.vue';
 import { useSpinnerStore } from '../stores/spinnerStore';
-import { computed, onMounted } from "vue";
-import { useRouter } from "vue-router";
-
-const router = useRouter();
+import { ref, onMounted } from "vue";
+import { useRoute } from 'vue-router';
 
 const spinnerStore = useSpinnerStore();
+const route = useRoute();
+
+const username = ref<string>('');
+const password = ref<string>('');
 
 onMounted(() => {
-  window.scrollTo(0,0)
-  spinnerStore.setSpinnerStatus(false);
+    window.scrollTo(0,0)
+    spinnerStore.setSpinnerStatus(false);
+
+    if (route.query.username !== null) {
+        username.value = route.query.username as string;
+    }
+    if (route.query.password !== null) {
+        password.value = route.query.password as string;
+    }
 })
 </script>
 
@@ -28,14 +37,14 @@ onMounted(() => {
         <div class="credentials">
             <div class="credentials-row">
                 <label>User name</label>
-                <p>Marta_st</p>
+                <p>{{ username }}</p>
             </div>
             <div class="credentials-row">
                 <label>Password</label>
-                <p>qwerty12345</p>
+                <p>{{ password }}</p>
             </div>
         </div>
-        <Button type="prime" to="/my-account">My account</Button>
+        <Button type="prime" to="/login">Sign in</Button>
     </div>
 
     <Footer />

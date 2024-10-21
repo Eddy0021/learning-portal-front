@@ -3,19 +3,73 @@ import Header from '../components/Header.vue';
 import Footer from '../components/Footer/Footer.vue';
 import Button from '../components/Button.vue';
 import Bradcrumbers from '../components/Bradcrumbers.vue';
-import PeopleTable from '../components/MyAccount/PeopleTable.vue';
 import { Training } from '../interface/Itraining';
+import API_PATHS from '../constants/apiPaths';
+import { useUserStore } from '../stores/userStore';
+import { useRouter } from "vue-router";
+import Swal from 'sweetalert2';
+
+const userStore = useUserStore();
+const user = userStore.getUser;
+
+const $router = useRouter();
 
 import { ref, computed, onMounted } from "vue";
 
-const training = ref<Training>({});
+const training = ref<Training>({
+    studentName: "",
+    trainingName: "",
+    date: "",
+    duration: "",
+    type: "",
+    trainerName: "",
+    student_id: ""
+});
+
+const calendarDate = ref<Date | null>(null);
+const trainers = computed(() => user?.connections?.map((connection: any) => connection.name));
 
 onMounted(() => {
     window.scrollTo(0,0);
 })
 
-function addTraining(){
-    console.log(training);  
+async function addTraining(){
+    try {
+        training.value.date = calendarDate?.value
+            ? calendarDate.value.toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit'
+            })
+            : ''; 
+
+        training.value.studentName =  `${user?.firstName} ${user?.lastName}` || '';
+        training.value.student_id = localStorage.getItem('uid') || '';
+
+        var token = localStorage.getItem('token');
+
+        const response = await fetch(API_PATHS.trainings, {
+            method: "POST",
+            headers: {
+                'Authorization': `${token}`
+            },
+            body: JSON.stringify(training.value)
+        });
+
+        if (!response.ok) throw new Error(`Error fetching user data: ${response.status}`);   
+        else{
+            Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Training has been saved.",
+            showConfirmButton: false,
+            timer: 1500
+            });
+        } 
+        $router.push('/trainings');
+    } catch (error: any) {
+        console.error(error.message);
+    }
 }
 </script>
 
@@ -34,11 +88,11 @@ function addTraining(){
             <div class="container-items-left">
                 <div class="input">
                     <label>Name</label>
-                    <input v-model="training.name" placeholder="Enter course name" required />
+                    <input v-model="training.trainingName" placeholder="Enter course name" required />
                 </div>
                 <div class="input">
                     <label>Traning start date</label>
-                    <Calendar v-model="training.startDate" showIcon iconDisplay="input" required />
+                    <Calendar v-model="calendarDate" showIcon iconDisplay="input" required />
                 </div>
                 <div class="input">
                     <label>Duration</label>
@@ -54,7 +108,7 @@ function addTraining(){
                 </div>
                 <div class="input">
                     <label>Description</label>
-                    <textarea v-model="training.description" placeholder="Enter item description">                     
+                    <textarea placeholder="Enter item description">                     
                     </textarea>
                 </div>
                 <div class="buttons">
@@ -65,11 +119,8 @@ function addTraining(){
             <div class="container-items-right">
                 <div class="input">
                    <label>Add trainer</label>
-                    <select v-model="training.trainer" required>
-                        <option>Jhon Doe</option>
-                        <option>Jerome Alero</option>
-                        <option>J Crow</option>
-                        <option>Anna Smith</option>
+                    <select v-model="training.trainerName" required>
+                        <option v-for="trainer in trainers" :key="trainer">{{ trainer }}</option>
                     </select> 
                 </div>
             </div>

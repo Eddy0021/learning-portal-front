@@ -4,30 +4,52 @@ import Footer from '../Footer/Footer.vue';
 import Button from '../Button.vue';
 import Bradcrumbers from '../Bradcrumbers.vue';
 
-import { ref, computed } from "vue";
+import { ref, watch, computed } from "vue";
 
 const dateFrom = ref('');
 const dateTo = ref('');
+const studentName = ref('');
+
+const props = defineProps({
+  data: {
+    type: Array,
+    default: () => []
+  }
+});
 
 const tableWidth = document.documentElement.clientWidth < 600 ? "width: 20rem;": "width: 80rem;";
 
 // Column Definitions: Defines the columns to be displayed.
- const colDefs = ref([
-    { field: "Date"},
-    { field: "TrainingName"},
-    { field: "Type"},
-    { field: "StudentName"},
-    { field: "Duration"},
- ]);
+const colDefs = ref([
+    { field: "date", headerName: "Date" },
+    { field: "trainingName", headerName: "Training Name" },
+    { field: "type", headerName: "Type" },
+    { field: "studentName", headerName: "Student Name" },
+    { field: "duration", headerName: "Duration" },
+]);
 
-// fake api for student
-const rowPassedTranings = ref([
-   { Date: "12.03.2023", TrainingName: "JavaScript Course", Type: "Webinar", StudentName: "Marta Black", Duration: "15d" },
-   { Date: "12.03.2023", TrainingName: "Course 2", Type: "Webinar", StudentName: "Student 1", Duration: "10d" },
-   { Date: "12.03.2023", TrainingName: "Course 3", Type: "Webinar", StudentName: "Student 2", Duration: "" },
-   { Date: "12.03.2023", TrainingName: "Course 4", Type: "Webinar", StudentName: "Student 3", Duration: "" },
-   { Date: "12.03.2023", TrainingName: "Course 5", Type: "Intern", StudentName: "Student 4", Duration: "" },
- ]);
+const rowPassedTranings = ref([]);
+
+watch(() => props.data, (newValue, oldValue) => {
+    rowPassedTranings.value = newValue.map(item => ({
+        date: item.date,
+        trainingName: item.trainingName,
+        type: item.type,
+        studentName: item.studentName,
+        duration: item.duration 
+    }));
+});
+
+const search = () => {
+    // Filter data based on search criteria
+    rowPassedTranings.value = props.data.filter(item => {
+        const byStudentName = !studentName.value || item.studentName.toLowerCase().includes(studentName.value.toLowerCase());
+        const byDateRange = (!dateFrom.value || new Date(item.date) >= new Date(dateFrom.value)) &&
+                            (!dateTo.value || new Date(item.date) <= new Date(dateTo.value));
+        // Return true if all conditions are met
+        return byStudentName && byDateRange;
+    });
+};
 </script>
 
 <template>
@@ -38,10 +60,10 @@ const rowPassedTranings = ref([
                 <div class="inputs">
                     <div class="input">
                         <label>Student name</label>
-                        <input class="width-20" placeholder="First name" />
+                        <input v-model="studentName" class="width-20" placeholder="First name" />
                     </div>
                 </div>
-                <Button type="prime">Search</Button>
+                <Button type="prime" @click="search">Search</Button>
             </div>
             <div class="container-items-right">
                 <div class="container-items-right-item input">

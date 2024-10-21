@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, computed, watch } from 'vue';
+import { onMounted, computed, watch } from 'vue';
 import { useUserStore } from './stores/userStore';
 import { usePrimeVue } from 'primevue/config';
 
@@ -7,16 +7,19 @@ const PrimeVue = usePrimeVue();
 const userStore = useUserStore();
 const currentTheme = computed(() => userStore.getTheme);
 
-onMounted(() => {
+onMounted(async () => {
   const initUserTheme = getTheme();
   userStore.setToggleTheme(initUserTheme === 'lara-light-purple' ? false : true);
+
+  localStorage.removeItem('token');
+  localStorage.removeItem('uid');
 });
 
 function getTheme() {
-  return localStorage.getItem("user-theme");
+  return localStorage.getItem("user-theme") ? localStorage.getItem("user-theme") : 'lara-light-purple';
 };
 
-watch(currentTheme, (newVal: boolean) => {
+watch(currentTheme, (newVal: boolean | null) => {
   if (!newVal) {
     setTheme('lara-light-purple');
   } else {

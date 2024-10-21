@@ -1,13 +1,8 @@
 <script setup lang="ts">
-import imgTrainer from '../assets/images/JoinT.png';
-import imgStudent from '../assets/images/JoinS.png';
-
 // static box images
 import c1 from '../assets/images/c1.png'
 import c2 from '../assets/images/c2.png'
 import c3 from '../assets/images/c3.png'
-
-import Button from './Button.vue';
 
 const props = defineProps<{
     img: string,
@@ -26,7 +21,7 @@ function setImage(){
 
 <template>
     <div class="box-component">      
-        <img :src="setImage()" alt="">
+        <img v-lazyload="setImage()" alt="">
         <div class="info">
             <h4>{{ tag }}</h4>
             <h3>{{ title }}</h3>

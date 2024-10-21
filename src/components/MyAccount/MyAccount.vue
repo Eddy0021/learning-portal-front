@@ -1,32 +1,40 @@
 <script setup lang="ts">
-import { ref, computed } from "vue";
+import { ref, computed, onMounted, watch } from "vue";
 import Button from '../Button.vue';
 import ChangeImage from './ChangeImage.vue';
 import { useUserStore } from '../../stores/userStore';
-import profilePicture from '../../assets/images/profilePicture.png';
 
 const userStore = useUserStore();
 const user = computed(() => userStore.getUser);
 const userEditStatus = computed(() => userStore.getUserEdit);
+const userSwitch = ref<boolean>(true);
 
-const isEdit = ref<boolean>(userEditStatus);
+const isEdit = computed(() => userEditStatus.value);
 
-function openEditImageModal(){
-    userStore.setEditImageStatus(true);
-}
+onMounted(() => {
+    if (user.value) {
+        userSwitch.value = user.value?.status as boolean;
+    }
+})
+
+watch(userSwitch, (newValue: boolean) => {
+    if (user.value) {
+        user.value.status = newValue;       
+    }
+})
 </script>
 
 <template>
-    <div class="box-component" :class="{'border': isEdit}">    
+    <div class="box-component" :class="{'border': isEdit}" v-if="user !== null">    
         <h1 class="title">My profile</h1> 
         <div class="image-and-status">
-            <Avatar class="p-overlay-badge" :image="user.image" size="xlarge" />
+            <Avatar class="p-overlay-badge" :image="user?.image" size="xlarge" />
             <div v-if="!isEdit" class="status">
                 <label>Status</label>
                 <span>
-                    <i v-if="user.status" class="fa-regular fa-circle-check" style="color: var(--green);"></i>
+                    <i v-if="user?.status" class="fa-regular fa-circle-check" style="color: var(--green);"></i>
                     <i v-else class="fa-regular fa-circle-xmark" style="color: var(--red);"></i>  
-                    <p :style="{ color: user.status ? 'var(--green)' : 'var(--red)' }">{{ user.status ? 'Active' : 'Not active' }}</p>  
+                    <p :style="{ color: user?.status ? 'var(--green)' : 'var(--red)' }">{{ user?.status ? 'Active' : 'Not active' }}</p>  
                 </span>
             </div>         
             <div v-else class="update-profile-picture">
@@ -42,49 +50,50 @@ function openEditImageModal(){
             <div class="input">
                 <label>First Name</label>                  
                 <input v-if="isEdit" v-model="user.firstName" type="text" required>
-                <p v-else>{{ user.firstName }}</p>
+                <p v-else>{{ user?.firstName }}</p>
             </div>
 
             <div class="input">
                 <label>Last Name</label>                
                 <input v-if="isEdit" v-model="user.lastName" type="text" required>
-                <p v-else>{{ user.lastName }}</p>
+                <p v-else>{{ user?.lastName }}</p>
             </div>
 
             <div class="input">
                 <label>User Name</label>                
                 <input v-if="isEdit" v-model="user.username" type="text" required>
-                <p v-else>{{ user.username }}</p>
+                <p v-else>{{ user?.username }}</p>
             </div>
             
             <!-- Student only -->
             <div v-if="user.type === 'Student'" class="input">
                 <label>Date of birth</label>                 
                 <input v-if="isEdit" v-model="user.dateOfBirth" type="text" required>
-                <p v-else>{{ user.dateOfBirth }}</p>
+                <p v-else>{{ user?.dateOfBirth }}</p>
             </div>
 
             <!-- Teacher only -->
             <div v-if="user.type === 'Trainer' && !isEdit" class="input">
                 <label>{{ 'Specialization' }}</label>
-                <p>{{ user.specialization }}</p>
+                <p>{{ user?.specialization }}</p>
             </div>
 
-            <div class="input">
+             <!-- Student only -->
+            <div v-if="user.type === 'Student'" class="input">
                 <label>Address</label>               
                 <input v-if="isEdit" v-model="user.address" type="text" required>
-                <p v-else>{{ user.address }}</p>
+                <p v-else>{{ user?.address }}</p>
             </div>
 
             <div class="input">
                 <label>Email</label>               
                 <input v-if="isEdit" v-model="user.email" type="text" required>
-                <p v-else>{{ user.email }}</p>
+                <p v-else>{{ user?.email }}</p>
             </div>
         </div>
         <div v-if="isEdit" class="change-status">
-            <label>{{status}}</label> 
-            <InputSwitch v-model="user.status" />
+            <label>{{ user?.status ? 'Active' : 'Not active' }}</label> 
+            <InputSwitch v-model="userSwitch" />
         </div>
     </div>
 </template>

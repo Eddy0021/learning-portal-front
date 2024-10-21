@@ -6,7 +6,7 @@ import logo from '../assets/images/logo.png'
 <template>
     <div class="logo">
         <router-link class="link" to="/">
-            <img :src="logo">
+            <img v-lazyload="logo">
             <h2>learn</h2>
         </router-link>
     </div>

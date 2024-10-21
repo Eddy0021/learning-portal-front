@@ -4,7 +4,7 @@ import imgStudent from '../assets/images/JoinS.png';
 
 import Button from './Button.vue';
 
-const props = defineProps<{
+defineProps<{
     type: string
 }>();
 </script>
@@ -16,7 +16,7 @@ const props = defineProps<{
             <p>Do consectetur proident proident id eiusmod deserunt consequat pariatur ad ex velit do Lorem reprehenderit.</p>
             <Button type="prime" :to="'/registration/' + type">Join us</Button>
         </div>
-        <img :src="type === 'Trainer' ? imgTrainer : imgStudent" alt="">
+        <img v-lazyload="type === 'Trainer' ? imgTrainer : imgStudent" alt="">
     </div>
 </template>
 

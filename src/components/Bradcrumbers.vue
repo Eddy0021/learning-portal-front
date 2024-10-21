@@ -1,15 +1,22 @@
 <script setup lang="ts">
-import { ref, watch } from "vue";
+import { ref, computed } from "vue";
 import { useRoute, useRouter } from "vue-router";
+import { BreadcrumbList } from '../interface/Ibradcrumber';
 
 const $route = useRoute();
 const $router = useRouter();
 
-const breadcrumbList = ref($route.meta.breadcrumb || []);
+const breadcrumbList = ref<BreadcrumbList>($route.meta.breadcrumb as BreadcrumbList);
 
-const navigateTo = (route: string) => {
+const navigateTo = (route: string | number) => {
   if(breadcrumbList.value[route].link) $router.push(breadcrumbList.value[route].link);
 };
+
+const isLastBreadcrumb = computed(() => {
+  return (index: any) => {
+    return (breadcrumbList.value.length as any) - 1 === index;
+  };
+});
 </script>
 
 <template>
@@ -22,15 +29,15 @@ const navigateTo = (route: string) => {
             <span
             class="bradcrumbers-item-link"
             @click="navigateTo(index)"
-            :class="{'linked': breadcrumbList.length-1 === index}">
+            :class="{'linked': isLastBreadcrumb(index)}">
 
                 {{ breadcrumb.name }}
 
             </span>
             
-            <i v-if="breadcrumbList.length-1 !== index" class="fa-solid fa-chevron-right"></i>
+            <i v-if="!isLastBreadcrumb(index)" class="fa-solid fa-chevron-right"></i>
         </div>
-  </div>
+    </div>
 </template>
 
 <style scoped lang="scss">

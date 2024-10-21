@@ -4,10 +4,8 @@ import Spinner from "./Spinner.vue";
 import { ref, type Ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { useUserStore } from '../stores/userStore';
-import Toast from 'primevue/toast';
-import { useToast } from 'primevue/usetoast';
-
-const toast = useToast();
+import Swal from 'sweetalert2';
+import API_PATHS from "../constants/apiPaths";
 
 const userStore = useUserStore();
 
@@ -15,54 +13,118 @@ const router = useRouter();
 
 const username: Ref<string> = ref("");
 const password: Ref<string> = ref("");
-const isVisible: Ref<boolean> = ref(false);
 const focusUsername: Ref<boolean> = ref(false);
 const focusPassword: Ref<boolean> = ref(false);
+
+declare const grecaptcha: any;
+declare const window: any;
 
 const tokenkey = ref<string>("");
 
 const toggleSpinner: Ref<boolean> = ref(false);
 
-import profilePicture from '../assets/images/noIMG.png';
-
-function login(){
+async function login(){
     if(tokenkey.value === ""){
-        toast.add({ severity: 'error', summary: 'Recaptcha', detail: 'Please mark that you aren`t a robot.', life: 5000 });
+        Swal.fire({
+            position: "top-end",
+            icon: "warning",
+            title: "Please mark that you aren`t a robot.",
+            showConfirmButton: false,
+            timer: 5000
+        });
         return;
     }
     
     toggleSpinner.value = true;
-    /* api for login put token response into localstorage or warn user */
-    localStorage.setItem('token', "123");
-    userStore.setUser({
-        firstName: "Marta",
-        lastName: "Black",
-        username: "Marta_st",
-        email: "marta_12334@gmail.com",
-        specialization: "Java",
-        dateOfBirth: "01.01.2001",
-        address: "Address;123 Main StreetBoston, MA 02108United States",
-        image: profilePicture,
-        status: true,
-        type: "Student",
-    })
-    toggleSpinner.value = false;
-    router.push('/my-account');
+
+    /* 
+        login api => user_id & token
+        call getUser details to fill the rest of the information needed
+    */ 
+   const body = {
+        username: username.value,
+        password: password.value
+   }
+
+   try {
+        const response = await fetch(API_PATHS.authentication + "/login", {
+            method: "POST",
+            body: JSON.stringify(body)
+        });
+
+        if(response.ok){
+            const data = await response.json();
+
+            if(data === "Wrong username." || data === "Wrong password."){
+                Swal.fire({
+                    position: "top-end",
+                    icon: "warning",
+                    title: data,
+                    showConfirmButton: false,
+                    timer: 5000
+                });
+                toggleSpinner.value = false;
+            }
+
+            var token = "Bearer " + data.token
+
+            localStorage.setItem('token', token);
+
+            const responseUser = await fetch(API_PATHS.users + "/" + data.user_id,
+            {
+                method: "GET",
+                headers: {
+                    'Authorization': `${token}`
+                },
+            })
+
+            if(responseUser.ok){
+                const userdata = await responseUser.json();
+                localStorage.setItem('uid', userdata.user_id);
+                userStore.setUser({
+                    firstName: userdata.firstName,
+                    lastName: userdata.lastName,
+                    username: userdata.username,
+                    email: userdata.email,
+                    specialization: userdata.specialization,
+                    dateOfBirth: userdata.dateOfBirth,
+                    address: userdata.address,
+                    image: userdata.image,
+                    status: userdata.status,
+                    type: userdata.type,
+                    connections: userdata.connections
+                })
+                toggleSpinner.value = false;
+                router.push('/');
+            }else{
+                localStorage.removeItem('token');
+            }
+        }
+   } catch (error: any) {
+        Swal.fire({
+            position: "top-end",
+            icon: "warning",
+            title: error.message,
+            showConfirmButton: false,
+            timer: 5000
+        });
+   }  
 }
 
 onMounted(() => {
     const inputElement = document.querySelectorAll('.p-inputtext');
     if (inputElement) {
         inputElement.forEach(element => {
-            element.style.background = '#F3F4F6FF';
-            element.style.border = 'none';
-            element.style.width = '100%';
-            element.style.boxShadow = "unset";
+            const inputElement = element as HTMLElement;
+            inputElement.style.background = '#F3F4F6FF';
+            inputElement.style.border = 'none';
+            inputElement.style.width = '100%';
+            inputElement.style.boxShadow = "unset";
             element.classList.add('font-color');
             element.setAttribute('autocomplete', 'current-password');
             element.addEventListener('focus', () => {
                 focusPassword.value = true;
-                element.style.background = 'unset';
+                inputElement.style.background = 'unset';
             });
             element.addEventListener('blur', () => {
                 if(password.value === '')focusPassword.value = false;            
@@ -74,9 +136,9 @@ onMounted(() => {
        grecaptcha.enterprise.render("recaptcha_container", {
         sitekey: "6LdB8eopAAAAAH0o7adDHwOuN9_S8u8TdN_84keJ",
         action: "verify",
-        callback: (token) => {
+        callback: (token: any) => {
           window.recaptcha_token = token;
-          console.log("recaptcha token : ", token);
+          //console.log("recaptcha token : ", token);
           tokenkey.value = token;
         },
       });

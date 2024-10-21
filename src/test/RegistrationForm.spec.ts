@@ -6,11 +6,17 @@ import Button from '../components/Button.vue';
 
 // Mock
 
-vi.mock('vue-router', () => ({
-  useRouter: () => ({
-    push: vi.fn(),
-  }),
-}));
+const mockRoutePush = vi.fn()
+vi.mock('vue-router', async () => {
+  return {
+    RouterView: {},
+    useRouter: () => {
+      return {
+        push: mockRoutePush
+      }
+    }
+  }
+})
 
 describe('RegistrationForm.vue', () => {
   beforeEach(() => {
@@ -43,13 +49,13 @@ describe('RegistrationForm.vue', () => {
     await wrapper.find('form').trigger('submit.prevent');
 
     // Check if the router push function is called with the correct route
-    expect(wrapper.vm.router.push).toHaveBeenCalledWith('/registration-verification');
+    expect(mockRoutePush).toHaveBeenCalledWith('/registration-verification');
 
     // Check if the user object is populated correctly
-    expect(wrapper.vm.user.firstName).toBe('');
-    expect(wrapper.vm.user.lastName).toBe('');
-    expect(wrapper.vm.user.email).toBe('');
-    expect(wrapper.vm.user.specialization).toBe('');
+    expect((wrapper.vm as any).user.firstName).toBe('');
+    expect((wrapper.vm as any).user.lastName).toBe('');
+    expect((wrapper.vm as any).user.email).toBe('');
+    expect((wrapper.vm as any).user.specialization).toBe('');
   });
 
   it('renders registration form for Student', async () => {
@@ -78,13 +84,13 @@ describe('RegistrationForm.vue', () => {
     await wrapper.find('form').trigger('submit.prevent');
 
     // Check if the router push function is called with the correct route
-    expect(wrapper.vm.router.push).toHaveBeenCalledWith('/registration-verification');
+    expect(mockRoutePush).toHaveBeenCalledWith('/registration-verification');
 
     // Check if the user object is populated correctly
-    expect(wrapper.vm.user.firstName).toBe('');
-    expect(wrapper.vm.user.lastName).toBe('');
-    expect(wrapper.vm.user.email).toBe('');
-    expect(wrapper.vm.user.dateOfBirth).toBe('');
-    expect(wrapper.vm.user.address).toBe('');
+    expect((wrapper.vm as any).user.firstName).toBe('');
+    expect((wrapper.vm as any).user.lastName).toBe('');
+    expect((wrapper.vm as any).user.email).toBe('');
+    expect((wrapper.vm as any).user.dateOfBirth).toBe('');
+    expect((wrapper.vm as any).user.address).toBe('');
   });
 });
